@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: geminiset-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gemini-operator
+  namespace: geminiset-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: gemini-operator-role
+rules:
+  # Pod and Node management for Gemini Scheduler & Controller
+  - apiGroups: [""]
+    resources: ["pods", "pods/binding", "pods/status"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: [""]
+    resources: ["nodes", "nodes/status"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch", "update"]
+  # GeminiSet CRD management
+  - apiGroups: ["geminiset.io"]
+    resources: ["geminisets", "geminisets/status"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: gemini-operator-binding
+subjects:
+  - kind: ServiceAccount
+    name: gemini-operator
+    namespace: geminiset-system
+roleRef:
+  kind: ClusterRole
+  name: gemini-operator-role
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,12 @@
+apiVersion: geminiset.io/v1alpha1
+kind: GeminiSet
+metadata:
+  name: zone-resilient-frontend
+  namespace: default
+spec:
+  prompt: "Deploy 4 replicas of a fast static web server using nginx alpine."
+  constraints:
+    - "distribute pods evenly across all available zones in the cluster (zone anti-affinity)"
+    - "do not place multiple frontend replicas on the same physical worker node"
+    - "keep memory usage strictly under 128Mi per pod"
+    - "avoid co-locating on nodes running database workloads"

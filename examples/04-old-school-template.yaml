@@ -1,0 +1,31 @@
+# GeminiSet with Old-School PodTemplate, Explicit Replicas, and Natural Language Constraints
+# Uses an explicit container spec while delegating scheduling decisions to Gemini Flash!
+
+apiVersion: geminiset.io/v1alpha1
+kind: GeminiSet
+metadata:
+  name: old-school-template-service
+  namespace: default
+spec:
+  replicas: 3
+  constraints:
+    - "distribute pods evenly across all availability zones in the cluster (zone anti-affinity)"
+    - "do not place multiple replicas on the same physical worker node"
+    - "select nodes with lowest pod density and ample memory headroom"
+  template:
+    metadata:
+      labels:
+        app: custom-api
+    spec:
+      containers:
+        - name: web
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gemini-operator
+  namespace: geminiset-system
+  labels:
+    app: gemini-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gemini-operator
+  template:
+    metadata:
+      labels:
+        app: gemini-operator
+    spec:
+      serviceAccountName: gemini-operator
+      containers:
+        - name: gemini-operator
+          image: ko://github.com/rakyll/geminiset/cmd/gemini-operator
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gemini-credentials
+                  key: api-key
+                  optional: true
+            - name: GEMINI_MODEL
+              value: "gemini-3.7-flash"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

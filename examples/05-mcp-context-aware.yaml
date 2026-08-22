@@ -1,0 +1,20 @@
+# GeminiSet with Model Context Protocol (MCP) Server Integration
+# Gemini connects to the specified MCP server endpoints to query tools and metrics
+# dynamically during workload synthesis and scheduling.
+
+apiVersion: geminiset.io/v1alpha1
+kind: GeminiSet
+metadata:
+  name: mcp-context-aware-service
+  namespace: default
+spec:
+  prompt: "Deploy 3 replicas of the payment service with high-availability zone spread."
+  constraints:
+    - "distribute pods evenly across all availability zones in the cluster"
+    - "select nodes with lowest pod density and ample memory headroom"
+  
+  # External MCP server endpoints providing context and tools to Gemini
+  mcpServers:
+    - name: prometheus-metrics
+      endpoint: "http://prometheus-mcp.monitoring.svc.cluster.local:8080"
+      description: "Live cluster metrics, node temperatures, and network latency"

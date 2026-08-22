@@ -1,0 +1,27 @@
+# Multilingual Polyglot GeminiSets with Natural Language Constraints
+# Gemini Flash 3.7 interprets prompt intent and enforces constraints written in any human language!
+
+---
+apiVersion: geminiset.io/v1alpha1
+kind: GeminiSet
+metadata:
+  name: spanish-web-service
+  namespace: default
+spec:
+  prompt: "Desplegar 3 réplicas de servidor web caddy para alta disponibilidad."
+  constraints:
+    - "distribuir equitativamente entre diferentes zonas de disponibilidad del clúster"
+    - "evitar nodos con alta densidad de pods o sobrecargados de CPU"
+    - "limitar el uso de memoria a 128Mi por pod"
+
+---
+apiVersion: geminiset.io/v1alpha1
+kind: GeminiSet
+metadata:
+  name: japanese-hello-world
+  namespace: default
+spec:
+  prompt: "3つのNode.js Hello Worldサーバーを稼働させ、高可用性を維持する。"
+  constraints:
+    - "クラスタ内の異なるノードに分散配置する"
+    - "メモリ使用量を128Mi以内に抑える"

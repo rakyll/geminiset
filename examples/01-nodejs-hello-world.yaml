@@ -1,0 +1,11 @@
+apiVersion: geminiset.io/v1alpha1
+kind: GeminiSet
+metadata:
+  name: nodejs-hello-world
+  namespace: default
+spec:
+  prompt: "Deploy 3 replicas of a hello world Node.js web application."
+  constraints:
+    - "distribute replicas across different availability zones in the cluster"
+    - "do not place multiple replicas on the same physical worker node"
+    - "limit memory usage to 128Mi per pod"
